@@ -9,23 +9,52 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="170"/>
         </Grid.RowDefinitions>
-        <CaptureElement x:Name="ViewFinder" Grid.Row="0" Grid.Column="0"/>
-        <ItemsControl x:Name="EmoControl" ItemsSource="{x:Bind MyEmo.Emotions, Mode=OneWay}" Grid.Row="0" Grid.Column="1">
+        <Border Grid.Row="0" Grid.Column="0" BorderThickness="2" BorderBrush="Blue">
+            <Grid x:Name="FacesCanvas" >
+               <CaptureElement x:Name="ViewFinder" />
+               <Rectangle x:Name="FaceRect" Visibility="Collapsed" StrokeThickness="2" Stroke="Yellow" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+            </Grid>
+        </Border>
+        <StackPanel Grid.Row="0" Grid.Column="1">
+            <TextBlock FontSize="40" Foreground="Red" HorizontalAlignment="Center">Emotionizer</TextBlock>
+            <TextBlock x:Name="EmoDesc" FontSize="30" HorizontalAlignment="Center" Visibility="Collapsed"/>
+            <ItemsControl x:Name="EmoControl" ItemsSource="{x:Bind MyEmo.Emotions, Mode=OneWay}" Margin="10" Visibility="Collapsed">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Emotion}" Width="100" FontSize="20" Foreground="Blue"/>
+                            <Rectangle Height="20" Width="{Binding Value500}" Fill="Blue"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <TextBlock FontSize="20" TextWrapping="WrapWholeWords" Margin="10" x:Name="Desc" Visibility="Visible">
+                This system will estimate your emotions. Please come and look at the camera. If your emotion is strong enough,
+                we will capture your face in the gallery and you will become famous.
+            </TextBlock>
+        </StackPanel>
+        <ItemsControl x:Name="FacesLine" Margin="10" Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{x:Bind Faces.Collection,Mode=OneWay}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Emotion}" Width="100" FontSize="20" Foreground="Blue"/>
-                        <Rectangle Height="20" Width="{Binding Value500}" Fill="Blue"/>
+                    <StackPanel>
+                        <Image HorizontalAlignment="Center" Source="{Binding Image}" Height="120" Width="100"/>
+                        <TextBlock HorizontalAlignment="Center" Text="{Binding Emotion}"/>
                     </StackPanel>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
+        <Image x:Name="img" Grid.Row="0" Grid.Column="1"/>
     </Grid>
 </Page>

@@ -16,6 +16,7 @@ namespace EmoStand
 
         public int Value500 { get { return (int)(Value * 500); } }
     }
+
     public class EmoCollection
     {
         public ObservableCollection<EmoCollectionRecord> Emotions { get; set; }
@@ -40,6 +41,19 @@ namespace EmoStand
             Emotions.Add(new EmoCollectionRecord() { Emotion = "Fear", Value = x.Fear, });
             Emotions.Add(new EmoCollectionRecord() { Emotion = "Sadness", Value = x.Sadness });
             Emotions.Add(new EmoCollectionRecord() { Emotion = "Surprise", Value = x.Surprise });
+        }
+
+        public EmoCollectionRecord StrongestEmotion
+        {
+            get
+            {
+                EmoCollectionRecord res = new EmoCollectionRecord() { Emotion = "None", Value = 0 };
+                foreach(var r in Emotions)
+                {
+                    if (r.Value > res.Value) res = r;
+                }
+                return res;
+            }
         }
 
         public override string ToString()
